@@ -1,4 +1,4 @@
-package mypkg;
+package com.example.demo;
 
 // java.nio.file.Files.createTempFile()に対するインターセプタクラス
 // SpringFrameworkのAOPを使用
@@ -22,8 +22,9 @@ public class CreateTmpfileInterceptor {
     // Files.createTempFile()メソッドに対するインターセプタ
     // 4つ目以降の引数であるFileAttribute<?>... attrsが省略された場合に、
     // "rwxrwxrwx"のパーミッションを引数に追加してFiles.createTempFile()メソッドを実行
-    @Around("execution(* java.nio.file.Files.createTempFile(java.nio.file.Path, String, String))")
+    @Around("execution(* java.nio.file.Files.createTempFile(..))")
     public Object createTempFile(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("Intercepted!");
         Object result = null;
         try {
             // Files.createTempFile()メソッドの引数を取得

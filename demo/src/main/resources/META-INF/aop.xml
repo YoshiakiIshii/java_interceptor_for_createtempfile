@@ -1,0 +1,10 @@
+<aspectj>
+    <weaver options="-verbose -showWeaveInfo">
+        <!-- すべてのクラスをウィーブ対象にする -->
+        <include within="*"/>
+    </weaver>
+    <aspects>
+        <!-- インターセプタクラスを指定 -->
+        <aspect name="com.example.demo.CreateTmpfileInterceptor"/>
+    </aspects>
+</aspectj>
