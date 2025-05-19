@@ -1,44 +1,43 @@
 package com.example.onlinedemo;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.util.MenuEvents;
+
 @RestController
 public class IndexController {
+    @Autowired
+    private MenuEvents menuEvents;
+
     // "/test"でアクセスされたら、ページを表示する
     @RequestMapping("/test")
     public String index() {
-        // "/tmp"にFiles.createTempFileでファイルを作成し、タイムスタンプを書き出す
-        // prefixはtimestamp、suffixは.txtとする
-        try {
-            Path path = Files.createTempFile(Paths.get("/tmp"), "timestamp", ".txt");
-            Files.writeString(path, LocalDateTime.now().toString());
-            // ファイルのパスとパーミッションを表示する
-            return """
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>表示完了</title>
-                    </head>
-                    <body>
-                        <h1>正常に表示が完了しました</h1>
-                        <p>タイムスタンプ: %s</p>
-                        <p>ファイルのパス: %s</p>
-                        <p>ファイルのパーミッション: %s</p>
-                    </body>
-                    </html>
-                    """.formatted(LocalDateTime.now(), path, Files.getPosixFilePermissions(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "ファイルの作成に失敗しました";
+        // MenuEventsからdestToMenuEventMapを取得し、テキスト化してリターンする
+        Map<String, List<String>> destToMenuEventMap = menuEvents.getDestToMenuEventMap();
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><body>");
+        sb.append("<h1>Menu Events</h1>");
+        sb.append("<p>Generated at: " + LocalDateTime.now() + "</p>");
+        sb.append("<table border='1'>");
+        sb.append("<tr><th>Destination</th><th>Menu Events</th></tr>");
+        for (Map.Entry<String, List<String>> entry : destToMenuEventMap.entrySet()) {
+            String dest = entry.getKey();
+            List<String> menuEventsList = entry.getValue();
+            sb.append("<tr><td>" + dest + "</td><td>");
+            for (String menuEvent : menuEventsList) {
+                sb.append(menuEvent + "<br>");
+            }
+            sb.append("</td></tr>");
         }
+        sb.append("</table>");
+        sb.append("</body></html>");
+        return sb.toString();
     }
 
 }

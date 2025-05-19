@@ -20,35 +20,12 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework:spring-context'
-    implementation 'org.springframework:spring-aop'
-    implementation 'org.aspectj:aspectjrt:1.9.7' // 追加: AspectJランタイム
-    implementation 'org.aspectj:aspectjweaver:1.9.7' // 追加: AspectJウィーバー
-    implementation 'org.springframework:spring-instrument:5.3.10' // 追加: Spring Instrument
+	implementation 'org.aspectj:aspectjrt'
+	implementation 'org.aspectj:aspectjweaver'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-bootRun {
-  // foobar プロファイルを指定する
-  jvmArgs = [
-	"-javaagent:${configurations.runtimeClasspath.find { it.name.contains('spring-instrument') }}"
-	]
-}
-
-tasks.withType(JavaExec) {
-    jvmArgs = [
-        "-javaagent:${configurations.runtimeClasspath.find { it.name.contains('spring-instrument') }}"
-    ]
-}
-
-task run(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'com.example.onlinedemo.OnlinedemoApplication'
-    jvmArgs = [
-        "-javaagent:${configurations.runtimeClasspath.find { it.name.contains('spring-instrument') }}"
-    ]
 }
