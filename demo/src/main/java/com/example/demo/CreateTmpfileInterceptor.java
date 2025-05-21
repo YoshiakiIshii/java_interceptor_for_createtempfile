@@ -2,11 +2,8 @@ package com.example.demo;
 
 // java.nio.file.Files.createTempFile()に対するインターセプタクラス
 // SpringFrameworkのAOPを使用
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermissions;
 

@@ -24,8 +24,9 @@ public class DemoApplication {
 	}
 
 	public static void main(String[] args) {
-		new ClassPathXmlApplicationContext("applicationContext.xml");
-		SpringApplication.run(DemoApplication.class, args);
+		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml")) {
+			SpringApplication.run(DemoApplication.class, args);
+		}
 	}
 
 }
