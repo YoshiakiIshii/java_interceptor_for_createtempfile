@@ -8,6 +8,15 @@
     <!-- org.springframeworkパッケージ以下のログレベルをINFOに設定 -->
     <logger name="org.springframework" level="INFO" />
 
+    <turboFilter class="ch.qos.logback.classic.turbo.DynamicThresholdFilter">
+        <Key>suppress</Key>
+        <DefaultThreshold>${APPLICATION_LOG_LEVEL}</DefaultThreshold>
+        <MDCValueLevelPair>
+            <value>true</value>
+            <level>warn</level>
+        </MDCValueLevelPair>
+    </turboFilter>
+
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
     </root>
