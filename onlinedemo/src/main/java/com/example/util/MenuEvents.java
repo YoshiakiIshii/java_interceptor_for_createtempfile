@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -27,9 +28,8 @@ public class MenuEvents {
 
     @PostConstruct
     public void init() {
-        // 追加要素1: キャッシュ出力処理でD層のデバッグログが大量出力されるので、ログレベルを一時的に上げる
-        AACacheableInitLoggingHandler cacheableInitLoggingHandler = new AACacheableInitLoggingHandler();
-        cacheableInitLoggingHandler.elevateRootLogLevel();
+        // 追加要素1: キャッシュ出力処理でD層のデバッグログが大量出力されるので、低レベルログを不要に設定する
+        MDC.put("suppress", "true");
 
         logger.info("MenuEventsの初期化を開始します");
 
@@ -66,7 +66,7 @@ public class MenuEvents {
         }
         logger.info("MenuEventsの初期化が完了しました");
 
-        // 追加要素4: 一時的に上げていたログレベルを元に戻す
-        cacheableInitLoggingHandler.restoreRootLogLevel();
+        // 追加要素4: 低レベルログ不要設定を解除する
+        MDC.remove("suppress");
     }
 }
